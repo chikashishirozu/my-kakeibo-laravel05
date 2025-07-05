@@ -1,20 +1,38 @@
 <?php
-
-namespace Tests\Feature;
-
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+// tests/Feature/DailyRecordApiTest.php
 use Tests\TestCase;
+use App\Models\User;
+use App\Models\DailyRecord;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DailyRecordApiTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
+    use RefreshDatabase;
 
-        $response->assertStatus(200);
+    public function test_authenticated_user_can_create_daily_record()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user, 'sanctum')->postJson('/api/daily-records', [
+            'date' => now()->toDateString(),
+            'amount' => 1500,
+            'category' => 'Food',
+            'note' => 'ランチ代'
+        ]);
+
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('daily_records', ['category' => 'Food']);
+    }
+
+    public function test_guest_cannot_create_daily_record()
+    {
+        $response = $this->postJson('/api/daily-records', [
+            'date' => now()->toDateString(),
+            'amount' => 1500,
+            'category' => 'Food',
+            'note' => 'ランチ代'
+        ]);
+
+        $response->assertStatus(401); // 認証されていない
     }
 }
