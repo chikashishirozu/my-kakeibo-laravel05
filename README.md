@@ -59,6 +59,11 @@ $ composer require laravelcollective/html
 # 🔄 Bonus: Reset and input test data
 $ php artisan migrate:fresh --seed
 
+# Test Generation Commands and Test Commands
+$ php artisan make:test DatabaseTransactionTest
+
+$ php artisan test
+
 # 📜 Conclusion: Why use SQLite and how professional it looks
 SQLite is a little weak for production use, but it's perfect for learning, prototyping, and small-scale operations. Laravel also works well with lightweight DBs, making it the perfect combination for learning while you're creating.
 
