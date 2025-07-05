@@ -47,6 +47,9 @@ $ php artisan make:model Expense -mcr
 
 # routing
 
+# 🔐 Generate APP_KEY command
+$ php artisan key:generate
+
 # Start and check
 $ php artisan serve --port=8003
 
